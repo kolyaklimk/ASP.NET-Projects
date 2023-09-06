@@ -6,13 +6,15 @@
 }
 
 <main class="container">
-    <label style="font-weight: bold; font-size: 40px;">Лабораторная работа 1</label>
+    <label style="font-weight: bold; font-size: 40px;">@ViewData["NameLab"]</label>
 
     <fieldset class="form-group">
         <legend class="col-form-label col-sm-2 pt-0" style="font-weight: bold; font-size: 30px;">Список</legend>
         <ol type="A">
-            <li>Элемент 1 списка</li>
-            <li>Элемент 2 списка</li>
+            @for (int a = 1; a < 4; a++)
+            {
+                <li>Элемент @a списка</li>
+            }
         </ol>
         <hr>
     </fieldset>
