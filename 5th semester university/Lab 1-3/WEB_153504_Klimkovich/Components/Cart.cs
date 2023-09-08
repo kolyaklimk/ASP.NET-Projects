@@ -4,15 +4,9 @@ namespace WEB_153504_Klimkovich.Components
 {
     public class Cart : ViewComponent
     {
-        private IRepository repository;
-        public Cart(IRepository repo)
+        public string Invoke()
         {
-            repository = repo;
+            return "0.00";
         }
-        public IViewComponentResult Invoke()
-        {
-            return View(repository.GetAll());
-        }
-
     }
 }

@@ -5,7 +5,7 @@
 }
 
 <a class="navbar-text ms-auto" asp-area="Cart" asp-action="Index">
-    00,0 руб <i class="fa-solid fa-cart-shopping"></i> (0)
+    @await Component.InvokeAsync("Cart") руб <i class="fa-solid fa-cart-shopping"></i> (0)
 </a>
 <div class="dropdown ms-4 nav-color">
     <button class="btn btn-secondary dropdown-toggle"
