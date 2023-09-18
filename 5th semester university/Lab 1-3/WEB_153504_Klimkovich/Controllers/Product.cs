@@ -19,10 +19,15 @@ namespace WEB_153504_Klimkovich.Controllers
         public async Task<IActionResult> Index(string? category)
         {
             var productResponse = await _productService.GetProductListAsync(category);
-
             if (!productResponse.Success)
                 return NotFound(productResponse.ErrorMessage);
 
+            var categoriesResponse = await _categoryService.GetCategoryListAsync();
+            if (!categoriesResponse.Success)
+                return NotFound(productResponse.ErrorMessage);
+
+            ViewData["currentCategory"] = category == null ? "Всё" : categoriesResponse.Data.Find(arg => arg.NormalizedName == category).Name;
+            ViewData["categories"] = categoriesResponse.Data;
             return View(productResponse.Data.Items);
         }
     }

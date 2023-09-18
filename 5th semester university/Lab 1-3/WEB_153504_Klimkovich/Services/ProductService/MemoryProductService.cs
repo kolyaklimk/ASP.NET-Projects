@@ -1,4 +1,5 @@
-﻿using WEB_153504_Klimkovich.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
 using WEB_153504_Klimkovich.Services.CategoryService;
 
@@ -9,11 +10,9 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         List<Electronics> _electronics;
         List<Category> _categories;
 
-        public MemoryProductService(ICategoryService categoryService)
+        public MemoryProductService([FromServices] IConfiguration config, ICategoryService categoryService, int pageNo)
         {
-            _categories = categoryService.GetCategoryListAsync()
-           .Result
-           .Data;
+            _categories = categoryService.GetCategoryListAsync().Result.Data;
             SetupData();
         }
 
@@ -79,9 +78,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             {
                 Data = new()
                 {
-                    Items = categoryNormalizedName!=null
-                    ? _electronics.FindAll(arg => arg.Category.NormalizedName == categoryNormalizedName)
-                    : _electronics,
+                    Items = _electronics.Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName)).ToList(),
                     CurrentPage = pageNo,
                     TotalPages = pageNo,
                 }

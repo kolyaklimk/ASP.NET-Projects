@@ -15,6 +15,8 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
                      NormalizedName="headphones"},
                  new Category {Id=3, Name="Клавиатуры",
                      NormalizedName="keyboards"},
+                 new Category {Id=3, Name="USB",
+                     NormalizedName="usb"},
             };
 
             var result = new ResponseData<List<Category>>();
