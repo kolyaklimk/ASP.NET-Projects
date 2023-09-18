@@ -4,16 +4,36 @@
     var returnUrl = request.Path + request.QueryString.ToUriComponent();
 }
 
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        Dropdown button
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               href="#"
+               role="button"
+               aria-expanded="false">
+                @ViewData["currentCategory"]
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                       asp-controller="product"
+                       asp-route-category=@null>Все</a>
+                </li>
+                @foreach (var item in ViewData["categories"] as List<Category>)
+                {
+                    <li>
+                        <a class="dropdown-item"
+                           asp-controller="product"
+                           asp-route-category="@item.NormalizedName">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
     </ul>
-</div>
+</div><!-- выбор категории -->
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
