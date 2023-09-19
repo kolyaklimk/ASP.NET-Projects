@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Services.CategoryService;
 using WEB_153504_Klimkovich.Services.ProductService;
 
@@ -16,9 +15,9 @@ namespace WEB_153504_Klimkovich.Controllers
             _productService = product;
         }
 
-        public async Task<IActionResult> Index(string? category)
+        public async Task<IActionResult> Index(string? category, int pageno)
         {
-            var productResponse = await _productService.GetProductListAsync(category);
+            var productResponse = await _productService.GetProductListAsync(category, pageno);
             if (!productResponse.Success)
                 return NotFound(productResponse.ErrorMessage);
 
@@ -28,7 +27,7 @@ namespace WEB_153504_Klimkovich.Controllers
 
             ViewData["currentCategory"] = category == null ? "Всё" : categoriesResponse.Data.Find(arg => arg.NormalizedName == category).Name;
             ViewData["categories"] = categoriesResponse.Data;
-            return View(productResponse.Data.Items);
+            return View(productResponse.Data);
         }
     }
 }
