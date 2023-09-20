@@ -29,52 +29,52 @@ namespace WEB_153504_Klimkovich.API.Data
                 var electronics = new List<Electronics>
                 {
                     new Electronics { Name="Redmi Note 5",
-                        Description="Snapdragon 636",
+                        Description="Snapdragon 636", Mime=".jpg",
                         Price = 199, Image=imageUrl+"/images/redmiNote5.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("smartphones"))},
 
                     new Electronics { Name="Huawei P Smart 2019",
-                        Description="Kirin 710",
+                        Description="Kirin 710", Mime=".jpg",
                         Price = 149, Image=imageUrl+"/images/huaweiPSmart.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("smartphones"))},
 
                     new Electronics { Name="Huawei 2020",
-                        Description="Kirin 810",
+                        Description="Kirin 810", Mime=".jpg",
                         Price = 230, Image=imageUrl+ "/images/huawei2020.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("smartphones"))},
 
                     new Electronics { Name="Huawei 2017",
-                        Description="Kirin 510",
+                        Description="Kirin 510", Mime=".jpg",
                         Price = 82, Image=imageUrl+"/images/huawei2017.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("smartphones"))},
 
                     new Electronics { Name="Redmi Note 8 Pro",
-                        Description="Snapdragon 712",
+                        Description="Snapdragon 712", Mime=".jpg",
                         Price = 222, Image=imageUrl+"/images/redmiNote8pro.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("smartphones"))},
 
                     new Electronics { Name="Beats",
-                        Description="White, big",
+                        Description="White, big", Mime=".jpg",
                         Price = 123, Image=imageUrl+"/images/beats.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("headphones"))},
 
                     new Electronics { Name="Sony xk840",
-                        Description="Blue",
+                        Description="Blue", Mime=".jpg",
                         Price = 235, Image=imageUrl+"/images/sonyxk840.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("headphones"))},
 
                     new Electronics { Name="AquaKey",
-                        Description="Red",
+                        Description="Red", Mime=".jpg",
                         Price = 53, Image=imageUrl+"/images/aquakey.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("keyboards"))},
 
                     new Electronics { Name="RGB Serial 2820",
-                        Description="RGB",
+                        Description="RGB", Mime=".jpg",
                         Price = 75, Image=imageUrl+"/images/rgbserial2820.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("keyboards"))},
 
                     new Electronics { Name="GrassKey",
-                        Description="Green",
+                        Description="Green", Mime=".jpg",
                         Price = 111, Image=imageUrl+"/images/grasskey.jpg",
                         Category= categories.Find(c=>c.NormalizedName.Equals("keyboards"))},
                 };
