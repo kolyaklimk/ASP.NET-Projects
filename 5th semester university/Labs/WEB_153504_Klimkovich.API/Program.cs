@@ -1,5 +1,7 @@
 using WEB_153504_Klimkovich.API.Data;
 using Microsoft.EntityFrameworkCore;
+using WEB_153504_Klimkovich.API.Services.CategoryService;
+using WEB_153504_Klimkovich.API.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
