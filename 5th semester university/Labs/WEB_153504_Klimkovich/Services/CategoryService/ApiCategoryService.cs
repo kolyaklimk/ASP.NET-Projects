@@ -1,12 +1,58 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using System.Text.Json;
+using WEB_153504_Klimkovich.Domain.Entities;
+using WEB_153504_Klimkovich.Domain.Models;
+using WEB_153504_Klimkovich.Services.ProductService;
 
 namespace WEB_153504_Klimkovich.Services.CategoryService
 {
-    public class ApiCategoryService : Controller
+    public class ApiCategoryService : ICategoryService
     {
-        public IActionResult Index()
+        private readonly HttpClient _httpClient;
+        private readonly string _pageSize;
+        private readonly ILogger<ApiProductService> _logger;
+        private readonly JsonSerializerOptions _serializerOptions;
+
+        public ApiCategoryService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiProductService> logger)
         {
-            return View();
+            _httpClient = httpClient;
+            _pageSize = configuration.GetSection("ItemsPerPage").Value;
+            _serializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            _logger = logger;
+        }
+
+        public async Task<ResponseData<List<Category>>> GetCategoryListAsync()
+        {
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Category/");
+            
+            var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<ResponseData<List<Category>>>(_serializerOptions);
+                }
+                catch (JsonException ex)
+                {
+                    _logger.LogError($"-----> Ошибка: {ex.Message}");
+                    return new ResponseData<List<Category>>
+                    {
+                        Success = false,
+                        ErrorMessage = $"Ошибка: {ex.Message}"
+                    };
+                }
+            }
+
+            _logger.LogError($"-----> Данные не получены от сервера. Error:{response.StatusCode}");
+            return new ResponseData<List<Category>>
+            {
+                Success = false,
+                ErrorMessage = $"Данные не получены от сервера. Error: {response.StatusCode}"
+            };
         }
     }
 }

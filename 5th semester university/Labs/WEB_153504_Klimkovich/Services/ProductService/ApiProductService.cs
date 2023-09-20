@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
 
 namespace WEB_153504_Klimkovich.Services.ProductService
 {
-    public class ApiProductService : Controller, IProductService
+    public class ApiProductService : IProductService
     {
         private readonly HttpClient _httpClient;
         private readonly string _pageSize;
@@ -24,14 +23,13 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             _logger = logger;
         }
 
-        public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
+        public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? category, int pageNo = 1)
         {
-            // подготовка URL запроса
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/");
             // добавить категорию в маршрут
-            if (categoryNormalizedName != null)
+            if (category != null)
             {
-                urlString.Append($"{categoryNormalizedName}/");
+                urlString.Append($"{category}/");
             };
             // добавить номер страницы в маршрут
             if (pageNo > 1)
@@ -96,12 +94,6 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         public Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
         {
             throw new NotImplementedException();
-        }
-
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         public Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
