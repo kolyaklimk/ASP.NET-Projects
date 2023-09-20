@@ -1,5 +1,4 @@
 using WEB_153504_Klimkovich.API.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
