@@ -12,10 +12,9 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
         private readonly ILogger<ApiProductService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
 
-        public ApiCategoryService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiProductService> logger)
+        public ApiCategoryService(HttpClient httpClient, ILogger<ApiProductService> logger)
         {
             _httpClient = httpClient;
-            _pageSize = configuration.GetSection("ItemsPerPage").Value;
             _serializerOptions = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -26,7 +25,7 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
         public async Task<ResponseData<List<Category>>> GetCategoryListAsync()
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Category/");
-            
+
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
             if (response.IsSuccessStatusCode)
