@@ -9,7 +9,6 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
     public class ApiCategoryService : ICategoryService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _pageSize;
         private readonly ILogger<ApiProductService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
 
