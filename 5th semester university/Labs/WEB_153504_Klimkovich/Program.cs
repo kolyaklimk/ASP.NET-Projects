@@ -18,11 +18,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 UriData UriData = builder.Configuration.GetSection("UriData").Get<UriData>();
-builder.Services.AddHttpClient<IProductService, ApiProductService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
+builder.Services.AddHttpClient<IProductService, ApiProductService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
 
-builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
-builder.Services.AddScoped<IProductService, MemoryProductService>();
+//builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
+//builder.Services.AddScoped<IProductService, MemoryProductService>();
 
 
 var app = builder.Build();

@@ -24,7 +24,7 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
 
         public async Task<ResponseData<List<Category>>> GetCategoryListAsync()
         {
-            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Category/");
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Categories/");
 
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
