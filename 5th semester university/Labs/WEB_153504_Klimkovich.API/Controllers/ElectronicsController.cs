@@ -21,6 +21,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
 
         // GET: api/Electronics/pageNo
         [HttpGet]
+        [HttpGet("page{pageNo:int}")]
         [HttpGet("{category}")]
         [HttpGet("{category}/page{pageNo:int}")]
         public async Task<ActionResult<IEnumerable<Electronics>>> GetElectronics(string? category, int pageNo = 1, int pageSize = 3)
