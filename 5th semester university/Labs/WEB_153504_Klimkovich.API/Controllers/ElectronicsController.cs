@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.API.Data;
 using WEB_153504_Klimkovich.API.Services.ProductService;
@@ -24,15 +19,17 @@ namespace WEB_153504_Klimkovich.API.Controllers
             _productService = productService;
         }
 
-        // GET: api/Electronics
+        // GET: api/Electronics/pageNo
         [HttpGet]
+        [HttpGet("{category}")]
+        [HttpGet("{category}/page{pageNo:int}")]
         public async Task<ActionResult<IEnumerable<Electronics>>> GetElectronics(string? category, int pageNo = 1, int pageSize = 3)
         {
             return Ok(await _productService.GetProductListAsync(category, pageNo, pageSize));
         }
 
         // GET: api/Electronics/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Electronics>> GetElectronics(int id)
         {
             if (_context.Electronics == null)
@@ -51,7 +48,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
 
         // PUT: api/Electronics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutElectronics(int id, Electronics electronics)
         {
             if (id != electronics.Id)
@@ -96,7 +93,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
         }
 
         // DELETE: api/Electronics/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteElectronics(int id)
         {
             if (_context.Electronics == null)

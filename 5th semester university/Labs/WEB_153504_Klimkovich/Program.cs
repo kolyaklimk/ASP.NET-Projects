@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.Data;
+using WEB_153504_Klimkovich.Entities;
 using WEB_153504_Klimkovich.Services.CategoryService;
 using WEB_153504_Klimkovich.Services.ProductService;
 
@@ -16,8 +17,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+UriData UriData = builder.Configuration.GetSection("UriData").Get<UriData>();
+builder.Services.AddHttpClient<IProductService, ApiProductService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
+
 builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
 builder.Services.AddScoped<IProductService, MemoryProductService>();
+
 
 var app = builder.Build();
 
@@ -41,9 +46,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

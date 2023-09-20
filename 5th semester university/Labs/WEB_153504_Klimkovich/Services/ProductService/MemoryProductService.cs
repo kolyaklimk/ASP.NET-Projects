@@ -79,15 +79,16 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         {
             var itemsPerPage = int.Parse(configuration["ItemsPerPage"]);
             var items = _electronics
-                .Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName)).AsQueryable();
+                .Where(d => categoryNormalizedName == null || d.Category.NormalizedName
+                .Equals(categoryNormalizedName));
 
             var result = new ResponseData<ListModel<Electronics>>()
             {
                 Data = new()
                 {
-                    Items = await items.Skip(itemsPerPage * (pageNo - 1)).Take(3).ToListAsync(),
+                    Items = items.Skip(itemsPerPage * (pageNo - 1)).Take(3).ToList(),
                     CurrentPage = pageNo,
-                    TotalPages = (await items.CountAsync() + itemsPerPage - 1) / itemsPerPage,
+                    TotalPages = (items.Count() + itemsPerPage - 1) / itemsPerPage,
                 }
             };
             return result;
