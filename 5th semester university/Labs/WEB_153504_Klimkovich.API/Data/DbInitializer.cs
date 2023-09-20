@@ -79,6 +79,9 @@ namespace WEB_153504_Klimkovich.API.Data
                         Category= categories.Find(c=>c.NormalizedName.Equals("keyboards"))},
                 };
 
+                context.Categories.RemoveRange(context.Categories);
+                context.Electronics.RemoveRange(context.Electronics);
+
                 context.Categories.AddRange(categories);
                 context.Electronics.AddRange(electronics);
                 await context.SaveChangesAsync();

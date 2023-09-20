@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
 using WEB_153504_Klimkovich.Services.CategoryService;
@@ -74,22 +75,22 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             };
         }
 
-        public Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
+        public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
         {
             var itemsPerPage = int.Parse(configuration["ItemsPerPage"]);
             var items = _electronics
-                .Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName));
+                .Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName)).AsQueryable();
 
             var result = new ResponseData<ListModel<Electronics>>()
             {
                 Data = new()
                 {
-                    Items = items.Skip(itemsPerPage * (pageNo - 1)).Take(3).ToList(),
+                    Items = await items.Skip(itemsPerPage * (pageNo - 1)).Take(3).ToListAsync(),
                     CurrentPage = pageNo,
-                    TotalPages = (items.Count() + itemsPerPage - 1) / itemsPerPage,
+                    TotalPages = (await items.CountAsync() + itemsPerPage - 1) / itemsPerPage,
                 }
             };
-            return Task.FromResult(result);
+            return result;
         }
 
         public Task<ResponseData<Electronics>> GetProductByIdAsync(int id)

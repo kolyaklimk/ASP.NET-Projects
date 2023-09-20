@@ -15,63 +15,58 @@ namespace WEB_153504_Klimkovich.API.Services.ProductService
             _context = context;
         }
 
-        public Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1, int pageSize = 3)
+        public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1, int pageSize = 3)
         {
             if (pageSize > _maxPageSize)
                 pageSize = _maxPageSize;
 
-            var query = _context.Electronics.AsQueryable();
-            var dataList = new ListModel<Electronics>();
-            query = query.Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName));
-            // количество элементов в списке
-            var count = query.Count();
-            if (count == 0)
-            {
-                return Task.FromResult(new ResponseData<ListModel<Electronics>>
-                {
-                    Data = dataList
-                });
-            }
-            // количество страниц
-            int totalPages = (int)Math.Ceiling(count / (double)pageSize);
+            var query = _context.Electronics
+                .AsQueryable()
+                .Where(d => categoryNormalizedName == null || d.Category.NormalizedName
+                .Equals(categoryNormalizedName));
+
+            int totalPages = (int)Math.Ceiling(await query.CountAsync() / (double)pageSize);
             if (pageNo > totalPages)
-                return Task.FromResult(new ResponseData<ListModel<Electronics>>
+                return new ResponseData<ListModel<Electronics>>
                 {
                     Data = null,
                     Success = false,
                     ErrorMessage = "No such page"
-                });
-            dataList.Items = query.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
-            dataList.CurrentPage = pageNo;
-            dataList.TotalPages = totalPages;
-            var response = new ResponseData<ListModel<Electronics>>
+                };
+
+            var result = new ResponseData<ListModel<Electronics>>()
             {
-                Data = dataList
+                Data = new()
+                {
+                    Items = await query.Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync(),
+                    CurrentPage = pageNo,
+                    TotalPages = totalPages,
+                }
             };
-            return Task.FromResult(response);
+            return result;
         }
 
-        public Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
+        public async Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseData<Electronics>> CreateProductAsync(Electronics product, IFormFile? formFile)
+        public async Task<ResponseData<Electronics>> CreateProductAsync(Electronics product, IFormFile? formFile)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
+        public async Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
+        public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
         {
             throw new NotImplementedException();
         }

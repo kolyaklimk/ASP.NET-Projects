@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.API.Data;
+using WEB_153504_Klimkovich.API.Services.CategoryService;
 using WEB_153504_Klimkovich.Domain.Entities;
 
 namespace WEB_153504_Klimkovich.API.Controllers
@@ -15,31 +16,29 @@ namespace WEB_153504_Klimkovich.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ICategoryService categoryService, ApplicationDbContext context)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
-            return await _context.Categories.ToListAsync();
+            return Ok(await _categoryService.GetCategoryListAsync());
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
             var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
@@ -86,10 +85,10 @@ namespace WEB_153504_Klimkovich.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-          if (_context.Categories == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
-          }
+            if (_context.Categories == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
+            }
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 

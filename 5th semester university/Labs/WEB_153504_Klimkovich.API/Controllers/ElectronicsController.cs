@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.API.Data;
+using WEB_153504_Klimkovich.API.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
 
 namespace WEB_153504_Klimkovich.API.Controllers
@@ -15,31 +16,29 @@ namespace WEB_153504_Klimkovich.API.Controllers
     public class ElectronicsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IProductService _productService;
 
-        public ElectronicsController(ApplicationDbContext context)
+        public ElectronicsController(IProductService productService, ApplicationDbContext context)
         {
             _context = context;
+            _productService = productService;
         }
 
         // GET: api/Electronics
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Electronics>>> GetElectronics()
+        public async Task<ActionResult<IEnumerable<Electronics>>> GetElectronics(string? category, int pageNo = 1, int pageSize = 3)
         {
-          if (_context.Electronics == null)
-          {
-              return NotFound();
-          }
-            return await _context.Electronics.ToListAsync();
+            return Ok(await _productService.GetProductListAsync(category, pageNo, pageSize));
         }
 
         // GET: api/Electronics/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Electronics>> GetElectronics(int id)
         {
-          if (_context.Electronics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Electronics == null)
+            {
+                return NotFound();
+            }
             var electronics = await _context.Electronics.FindAsync(id);
 
             if (electronics == null)
@@ -86,10 +85,10 @@ namespace WEB_153504_Klimkovich.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Electronics>> PostElectronics(Electronics electronics)
         {
-          if (_context.Electronics == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Electronics'  is null.");
-          }
+            if (_context.Electronics == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Electronics'  is null.");
+            }
             _context.Electronics.Add(electronics);
             await _context.SaveChangesAsync();
 

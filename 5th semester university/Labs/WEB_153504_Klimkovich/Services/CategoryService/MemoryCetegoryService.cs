@@ -5,7 +5,7 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
 {
     public class MemoryCategoryService : ICategoryService
     {
-        public Task<ResponseData<List<Category>>> GetCategoryListAsync()
+        public async Task<ResponseData<List<Category>>> GetCategoryListAsync()
         {
             var categories = new List<Category>
             {
@@ -15,13 +15,11 @@ namespace WEB_153504_Klimkovich.Services.CategoryService
                      NormalizedName="headphones"},
                  new Category {Id=3, Name="Клавиатуры",
                      NormalizedName="keyboards"},
-                 new Category {Id=3, Name="USB",
-                     NormalizedName="usb"},
             };
 
             var result = new ResponseData<List<Category>>();
             result.Data = categories;
-            return Task.FromResult(result);
+            return result;
         }
     }
 

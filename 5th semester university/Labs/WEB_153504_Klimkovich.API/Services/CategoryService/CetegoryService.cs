@@ -5,7 +5,7 @@ namespace WEB_153504_Klimkovich.API.Services.CategoryService
 {
     public class CategoryService : ICategoryService
     {
-        public Task<ResponseData<List<Category>>> GetCategoryListAsync()
+        public async Task<ResponseData<List<Category>>> GetCategoryListAsync()
         {
             var categories = new List<Category>
             {
@@ -21,7 +21,7 @@ namespace WEB_153504_Klimkovich.API.Services.CategoryService
 
             var result = new ResponseData<List<Category>>();
             result.Data = categories;
-            return Task.FromResult(result);
+            return result;
         }
     }
 
