@@ -26,22 +26,22 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? category, int pageNo = 1)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/");
-            // добавить категорию в маршрут
+            
             if (category != null)
             {
                 urlString.Append($"{category}/");
             };
-            // добавить номер страницы в маршрут
+
             if (pageNo > 1)
             {
                 urlString.Append($"page{pageNo}");
             };
-            // добавить размер страницы в строку запроса
+
             if (!_pageSize.Equals("3"))
             {
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
-            // отправить запрос к API
+
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
             if (response.IsSuccessStatusCode)
