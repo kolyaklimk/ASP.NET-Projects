@@ -1,0 +1,49 @@
+﻿@page
+@model WEB_153504_Klimkovich.Areas.Admin.Pages.IndexModel
+
+<p>
+    <a class="btn btn-primary" asp-page="Create"><i class="fas fa-plus"></i> Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Electronics[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Electronics[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Electronics[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Electronics[0].Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Electronics)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Image)" width="100">
+                </td>
+                <td>
+                    <a class="btn btn-success" asp-page="./Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pencil-alt"></i> Edit</a>
+                    <a class="btn btn-info" asp-page="./Details" asp-route-id="@item.Id"><i class="fa-solid fa-edit"></i> Details</a>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-alt"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

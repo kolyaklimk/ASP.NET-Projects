@@ -5,7 +5,6 @@ namespace WEB_153504_Klimkovich.Services.ProductService
 {
     public interface IProductService
     {
-
         public Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string?
        categoryNormalizedName, int pageNo = 1);
 
