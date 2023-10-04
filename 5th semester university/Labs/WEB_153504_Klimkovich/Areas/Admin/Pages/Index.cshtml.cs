@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using WEB_153504_Klimkovich.Services.ProductService;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using WEB_153504_Klimkovich.Domain.Entities;
+using WEB_153504_Klimkovich.Domain.Models;
+using WEB_153504_Klimkovich.Services.ProductService;
 
 namespace WEB_153504_Klimkovich.Areas.Admin.Pages
 {
@@ -19,17 +14,16 @@ namespace WEB_153504_Klimkovich.Areas.Admin.Pages
             _productService = productService;
         }
 
-        public IList<Electronics> Electronics { get; set; } = default!;
+        public ListModel<Electronics> Electronics { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNo = 1)
         {
-            var result = await _productService.GetProductListAsync(null);
+            var result = await _productService.GetProductListAsync(null, pageNo);
 
-            if (result != null && result.Data != null)
+            if (result.Success)
             {
-                Electronics = result.Data.Items;
+                Electronics = result.Data;
             }
         }
     }
-
 }
