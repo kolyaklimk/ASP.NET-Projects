@@ -12,7 +12,7 @@ namespace WEB_153504_Klimkovich.API.Services.ProductService
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, 
+        public ProductService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -53,22 +53,141 @@ namespace WEB_153504_Klimkovich.API.Services.ProductService
 
         public async Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (_context.Electronics == null)
+            {
+                return new ResponseData<Electronics>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+            var electronics = await _context.Electronics.FindAsync(id);
+
+            if (electronics == null)
+            {
+                return new ResponseData<Electronics>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+
+            return new ResponseData<Electronics>
+            {
+                Data = electronics,
+                Success = true,
+            };
         }
 
-        public async Task<ResponseData<Electronics>> CreateProductAsync(Electronics product, IFormFile? formFile)
+        public async Task<ResponseData<Electronics>> CreateProductAsync(Electronics electronics, IFormFile? formFile)
         {
-            throw new NotImplementedException();
+            if (_context.Electronics == null)
+            {
+                return new ResponseData<Electronics>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+
+            _context.Electronics.Add(electronics);
+            await _context.SaveChangesAsync();
+
+            return new ResponseData<Electronics>
+            {
+                Data = electronics,
+                Success = true,
+            };
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task<ResponseData<string>> DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            if (_context.Electronics == null)
+            {
+                return new ResponseData<string>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+            var electronics = await _context.Electronics.FindAsync(id);
+            if (electronics == null)
+            {
+                return new ResponseData<string>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No find item"
+                };
+            }
+
+            _context.Electronics.Remove(electronics);
+            await _context.SaveChangesAsync();
+
+            return new ResponseData<string>
+            {
+                Data = null,
+                Success = true,
+            };
         }
 
-        public async Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
+        public async Task<ResponseData<Electronics>> UpdateProductAsync(int id, Electronics electronics, IFormFile? formFile)
         {
-            throw new NotImplementedException();
+            if (id != electronics.Id)
+            {
+                return new ResponseData<Electronics>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+
+            var existingElectronics = await _context.Electronics.FindAsync(id);
+            if (existingElectronics == null)
+            {
+                return new ResponseData<Electronics>
+                {
+                    Data = null,
+                    Success = false,
+                    ErrorMessage = "No items"
+                };
+            }
+
+            _context.Entry(existingElectronics).CurrentValues.SetValues(electronics);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!(_context.Electronics?.Any(e => e.Id == id)).GetValueOrDefault())
+                {
+                    return new ResponseData<Electronics>
+                    {
+                        Data = null,
+                        Success = false,
+                        ErrorMessage = "No items"
+                    };
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            var responseData = new ResponseData<Electronics>
+            {
+                Data = electronics,
+                Success = true
+            };
+
+            return responseData;
         }
 
         public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)

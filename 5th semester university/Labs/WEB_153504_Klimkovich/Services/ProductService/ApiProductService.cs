@@ -1,6 +1,8 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using System.Text;
 using System.Text.Json;
+using WEB_153504_Klimkovich.Controllers;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
 
@@ -36,17 +38,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             var streamContent = new StreamContent(image.OpenReadStream());
             content.Add(streamContent, "formFile", image.FileName);
             request.Content = content;
-
-            var response = await _httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"good");
-            }
-            else
-            {
-                Console.WriteLine($"Ошибка при отправке запроса: {response.StatusCode}");
-            }
+            await _httpClient.SendAsync(request);
         }
 
         public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? category, int pageNo = 1)
@@ -98,15 +90,14 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Electronics");
             var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
-            var newItem = await response.Content.ReadFromJsonAsync<Electronics>();
             if (response.IsSuccessStatusCode)
             {
+                var data =  await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
                 if (formFile != null)
                 {
-                    SaveImageAsync(newItem.Id, formFile);
+                    await SaveImageAsync(data.Data.Id, formFile);
                 }
-
-                return await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
+                return data;
             }
 
             _logger.LogError($"-----> object not created. Error:{response.StatusCode}");
@@ -117,14 +108,41 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             };
         }
 
-        public Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/{id}");
+
+            var response = await _httpClient.DeleteAsync(new Uri(urlString.ToString()));
         }
 
-        public Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
+        public async Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/{id}");
+
+            var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
+                }
+                catch (JsonException ex)
+                {
+                    _logger.LogError($"-----> Ошибка: {ex.Message}");
+                    return new ResponseData<Electronics>
+                    {
+                        Success = false,
+                        ErrorMessage = $"Ошибка: {ex.Message}"
+                    };
+                }
+            }
+            _logger.LogError($"-----> Данные не получены от сервера. Error:{response.StatusCode}");
+            return new ResponseData<Electronics>
+            {
+                Success = false,
+                ErrorMessage = $"Данные не получены от сервера. Error: {response.StatusCode}"
+            };
         }
 
         public async Task<ResponseData<Electronics>> UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
@@ -134,12 +152,12 @@ namespace WEB_153504_Klimkovich.Services.ProductService
 
             if (response.IsSuccessStatusCode)
             {
+                var data = await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
                 if (formFile != null)
                 {
-                    await SaveImageAsync(id, formFile);
+                    await SaveImageAsync(data.Data.Id, formFile);
                 }
-
-                return await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
+                return data;
             }
 
             _logger.LogError($"-----> object not updated. Error:{response.StatusCode}");

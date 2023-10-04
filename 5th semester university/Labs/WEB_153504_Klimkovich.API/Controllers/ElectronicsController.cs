@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.API.Data;
 using WEB_153504_Klimkovich.API.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
@@ -36,51 +35,27 @@ namespace WEB_153504_Klimkovich.API.Controllers
 
         // GET: api/Electronics/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Electronics>> GetElectronics(int id)
+        public async Task<ActionResult<ResponseData<Electronics>>> GetElectronics(int id)
         {
-            if (_context.Electronics == null)
+            var response = await _productService.GetProductByIdAsync(id);
+            if (response.Success)
             {
-                return NotFound();
+                return Ok(response);
             }
-            var electronics = await _context.Electronics.FindAsync(id);
-
-            if (electronics == null)
-            {
-                return NotFound();
-            }
-
-            return electronics;
+            return NotFound(response);
         }
 
         // PUT: api/Electronics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutElectronics(int id, Electronics electronics)
+        public async Task<ActionResult<ResponseData<Electronics>>> PutElectronics(int id, Electronics electronics)
         {
-            if (id != electronics.Id)
+            var response = await _productService.UpdateProductAsync(id, electronics, null);
+            if (response.Success)
             {
-                return BadRequest();
+                return Ok(response);
             }
-
-            _context.Entry(electronics).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ElectronicsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound(response);
         }
 
         // POST: api/Electronics/5
@@ -98,42 +73,26 @@ namespace WEB_153504_Klimkovich.API.Controllers
         // POST: api/Electronics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Electronics>> PostElectronics(Electronics electronics)
+        public async Task<ActionResult<ResponseData<Electronics>>> PostElectronics(Electronics electronics)
         {
-            if (_context.Electronics == null)
+            var response = await _productService.CreateProductAsync(electronics, null);
+            if (response.Success)
             {
-                return Problem("Entity set 'ApplicationDbContext.Electronics'  is null.");
+                return Ok(response);
             }
-
-            _context.Electronics.Add(electronics);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetElectronics", new { id = electronics.Id }, electronics);
+            return NotFound(response);
         }
 
         // DELETE: api/Electronics/5
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteElectronics(int id)
         {
-            if (_context.Electronics == null)
+            var response = await _productService.DeleteProductAsync(id);
+            if (response.Success)
             {
-                return NotFound();
+                return Ok(response);
             }
-            var electronics = await _context.Electronics.FindAsync(id);
-            if (electronics == null)
-            {
-                return NotFound();
-            }
-
-            _context.Electronics.Remove(electronics);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ElectronicsExists(int id)
-        {
-            return (_context.Electronics?.Any(e => e.Id == id)).GetValueOrDefault();
+            return NotFound(response);
         }
     }
 }
