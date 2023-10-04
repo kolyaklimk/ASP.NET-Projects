@@ -5,7 +5,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Electronics.Name" class="control-label"></label>
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Electronics.CategoryId" class="control-label"></label>
-                <select asp-for="Electronics.CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="Electronics.CategoryId" class="form-control" asp-items="@ViewData["CategoryId"] as SelectList"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Electronics.Price" class="control-label"></label>
@@ -27,14 +27,8 @@
                 <span asp-validation-for="Electronics.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Electronics.Image" class="control-label"></label>
-                <input asp-for="Electronics.Image" class="form-control" />
-                <span asp-validation-for="Electronics.Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Electronics.Mime" class="control-label"></label>
-                <input asp-for="Electronics.Mime" class="form-control" />
-                <span asp-validation-for="Electronics.Mime" class="text-danger"></span>
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -46,7 +40,3 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Azure;
+using System.Text;
 using System.Text.Json;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
@@ -23,10 +24,35 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             _logger = logger;
         }
 
+        private async Task SaveImageAsync(int id, IFormFile image)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/{id}")
+            };
+
+            var content = new MultipartFormDataContent();
+            var streamContent = new StreamContent(image.OpenReadStream());
+            content.Add(streamContent, "formFile", image.FileName);
+            request.Content = content;
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"good");
+            }
+            else
+            {
+                Console.WriteLine($"Ошибка при отправке запроса: {response.StatusCode}");
+            }
+        }
+
         public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? category, int pageNo = 1)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/");
-            
+
             if (category != null)
             {
                 urlString.Append($"{category}/");
@@ -72,9 +98,14 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Electronics");
             var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
-
+            var newItem = await response.Content.ReadFromJsonAsync<Electronics>();
             if (response.IsSuccessStatusCode)
             {
+                if (formFile != null)
+                {
+                    SaveImageAsync(newItem.Id, formFile);
+                }
+
                 return await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
             }
 
@@ -96,9 +127,27 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             throw new NotImplementedException();
         }
 
-        public Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
+        public async Task<ResponseData<Electronics>> UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"Electronics/{id}");
+            var response = await _httpClient.PutAsJsonAsync(uri, product, _serializerOptions);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (formFile != null)
+                {
+                    await SaveImageAsync(id, formFile);
+                }
+
+                return await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
+            }
+
+            _logger.LogError($"-----> object not updated. Error:{response.StatusCode}");
+            return new ResponseData<Electronics>
+            {
+                Success = false,
+                ErrorMessage = $"Объект не обновлен. Error:{response.StatusCode}"
+            };
         }
     }
 }

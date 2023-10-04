@@ -10,7 +10,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
 
         public Task<ResponseData<Electronics>> GetProductByIdAsync(int id);
 
-        public Task UpdateProductAsync(int id, Electronics product, IFormFile? formFile);
+        public Task<ResponseData<Electronics>> UpdateProductAsync(int id, Electronics product, IFormFile? formFile);
 
         public Task DeleteProductAsync(int id);
 

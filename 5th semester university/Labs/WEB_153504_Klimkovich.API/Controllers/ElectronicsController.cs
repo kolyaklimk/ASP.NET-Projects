@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WEB_153504_Klimkovich.API.Data;
 using WEB_153504_Klimkovich.API.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
+using WEB_153504_Klimkovich.Domain.Models;
 
 namespace WEB_153504_Klimkovich.API.Controllers
 {
@@ -12,11 +13,15 @@ namespace WEB_153504_Klimkovich.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
+        private readonly string _imagesPath;
+        private readonly string _appUri;
 
-        public ElectronicsController(IProductService productService, ApplicationDbContext context)
+        public ElectronicsController(IWebHostEnvironment env, IConfiguration configuration, IProductService productService, ApplicationDbContext context)
         {
             _context = context;
             _productService = productService;
+            _imagesPath = Path.Combine(env.WebRootPath, "Images");
+            _appUri = configuration.GetSection("ImageUrl").Value;
         }
 
         // GET: api/Electronics/pageNo
@@ -78,6 +83,18 @@ namespace WEB_153504_Klimkovich.API.Controllers
             return NoContent();
         }
 
+        // POST: api/Electronics/5
+        [HttpPost("{id}")]
+        public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
+        {
+            var response = await _productService.SaveImageAsync(id, formFile);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
+
         // POST: api/Electronics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -87,6 +104,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Electronics'  is null.");
             }
+
             _context.Electronics.Add(electronics);
             await _context.SaveChangesAsync();
 

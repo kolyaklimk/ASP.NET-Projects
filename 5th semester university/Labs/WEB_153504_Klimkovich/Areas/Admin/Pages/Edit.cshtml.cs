@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using WEB_153504_Klimkovich.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
+using WEB_153504_Klimkovich.Services.ProductService;
 
 namespace WEB_153504_Klimkovich.Areas.Admin.Pages
 {
@@ -20,9 +15,8 @@ namespace WEB_153504_Klimkovich.Areas.Admin.Pages
             _productService = productService;
         }
 
-        [BindProperty]
-        public Electronics Electronics { get; set; } = default!;
-
+        [BindProperty] public Electronics Electronics { get; set; } = default!;
+        [BindProperty] public IFormFile? Image { get; set; }
         public SelectList CategoryList { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -56,7 +50,7 @@ namespace WEB_153504_Klimkovich.Areas.Admin.Pages
                 return Page();
             }
 
-             await _productService.UpdateProductAsync(Electronics.Id, Electronics, null); // Вместо null можете передать форму для загрузки файла, если необходимо.
+            await _productService.UpdateProductAsync(Electronics.Id, Electronics, Image); // Вместо null можете передать форму для загрузки файла, если необходимо.
 
 
             return RedirectToPage("./Index");

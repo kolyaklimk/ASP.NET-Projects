@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WEB_153504_Klimkovich.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
+using WEB_153504_Klimkovich.Services.CategoryService;
+using WEB_153504_Klimkovich.Services.ProductService;
 
 namespace WEB_153504_Klimkovich.Areas.Admin.Pages
 {
     public class CreateModel : PageModel
     {
         private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public CreateModel(IProductService productService)
+        public CreateModel(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         [BindProperty]
         public Electronics Electronics { get; set; } = default!;
+        [BindProperty]
+        public IFormFile? Image { get; set; }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            // Здесь вы можете получить список категорий из ProductService,
-            // если это необходимо для вашей страницы создания.
-            // ViewData["CategoryId"] = new SelectList(_productService.GetCategories(), "Id", "Name");
+            var categoryList = await _categoryService.GetCategoryListAsync();
+            ViewData["CategoryId"] = new SelectList(categoryList.Data, "Id", "Name");
             return Page();
         }
 
@@ -37,7 +37,7 @@ namespace WEB_153504_Klimkovich.Areas.Admin.Pages
                 return Page();
             }
 
-            await _productService.CreateProductAsync(Electronics, null); // Вместо null можете передать форму для загрузки файла, если необходимо.
+            await _productService.CreateProductAsync(Electronics, Image);
 
             return RedirectToPage("./Index");
         }

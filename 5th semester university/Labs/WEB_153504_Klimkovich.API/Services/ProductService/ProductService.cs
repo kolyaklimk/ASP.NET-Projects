@@ -8,11 +8,16 @@ namespace WEB_153504_Klimkovich.API.Services.ProductService
     public class ProductService : IProductService
     {
         private readonly int _maxPageSize = 20;
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductService(ApplicationDbContext context)
+        public ProductService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, 
+            IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<ResponseData<ListModel<Electronics>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1, int pageSize = 3)
@@ -68,7 +73,44 @@ namespace WEB_153504_Klimkovich.API.Services.ProductService
 
         public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
         {
-            throw new NotImplementedException();
+            var responseData = new ResponseData<string>();
+            var electronic = await _context.Electronics.FindAsync(id);
+            if (electronic == null)
+            {
+                responseData.Success = false;
+                responseData.ErrorMessage = "No item found";
+                return responseData;
+            }
+            var host = "https://" + _httpContextAccessor.HttpContext.Request.Host;
+            var imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+            if (formFile != null)
+            {
+                // Удалить предыдущее изображение
+                if (!String.IsNullOrEmpty(electronic.Image))
+                {
+                    var prevImage = Path.GetFileName(electronic.Image);
+                    if (File.Exists(prevImage))
+                    {
+                        File.Delete(prevImage);
+                    }
+                }
+                // Создать имя файла
+                var ext = Path.GetExtension(formFile.FileName);
+                var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
+
+                // Сохранить файл
+                var imagePath = Path.Combine(imageFolder, fName);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                // Указать имя файла в объекте
+                electronic.Image = $"{host}/Images/{fName}";
+                await _context.SaveChangesAsync();
+            }
+            responseData.Data = electronic.Image;
+            return responseData;
         }
     }
 }

@@ -113,5 +113,10 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         {
             throw new NotImplementedException();
         }
+
+        Task<ResponseData<Electronics>> IProductService.UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
