@@ -57,7 +57,8 @@ namespace WEB_153504_Klimkovich.IdentityServer
                     {
                         UserName = "bob",
                         Email = "BobSmith@email.com",
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        
                     };
                     var result = userMgr.CreateAsync(bob, "Pass123$").Result;
                     if (!result.Succeeded)
