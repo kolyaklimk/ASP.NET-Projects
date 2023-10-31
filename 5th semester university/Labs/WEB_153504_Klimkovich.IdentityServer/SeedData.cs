@@ -17,72 +17,131 @@ namespace WEB_153504_Klimkovich.IdentityServer
                 var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 context.Database.Migrate();
 
+                #region create role
+
+                var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var role = roleMgr.FindByNameAsync("user").Result;
+                if (role == null)
+                {
+                    role = new IdentityRole
+                    {
+                        Name = "user",
+                        NormalizedName = "user",
+                    };
+                    var result = roleMgr.CreateAsync(role).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("role user created");
+                }
+                else
+                {
+                    Log.Debug("role user already exists");
+                }
+
+                role = roleMgr.FindByNameAsync("admin").Result;
+                if (role == null)
+                {
+                    role = new IdentityRole
+                    {
+                        Name = "admin",
+                        NormalizedName = "admin",
+                    };
+                    var result = roleMgr.CreateAsync(role).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("role admin created");
+                }
+                else
+                {
+                    Log.Debug("role admin already exists");
+                }
+
+                #endregion
+
+                #region create users
+
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var alice = userMgr.FindByNameAsync("alice").Result;
-                if (alice == null)
+                var user = userMgr.FindByNameAsync("user").Result;
+                if (user == null)
                 {
-                    alice = new ApplicationUser
+                    user = new ApplicationUser
                     {
-                        UserName = "alice",
-                        Email = "AliceSmith@email.com",
+                        UserName = "user",
+                        Email = "user@gmail.com",
                         EmailConfirmed = true,
                     };
-                    var result = userMgr.CreateAsync(alice, "Pass123$").Result;
+                    var result = userMgr.CreateAsync(user, "User1234_").Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddClaimsAsync(alice, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Alice"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                    result = userMgr.AddToRoleAsync(user, "user").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+
+                    result = userMgr.AddClaimsAsync(user, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "Fake_user"),
+                            new Claim(JwtClaimTypes.GivenName, "User"),
+                            new Claim(JwtClaimTypes.FamilyName, "No"),
+                            new Claim(JwtClaimTypes.WebSite, "http://user.com"),
                         }).Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
-                    Log.Debug("alice created");
+                    Log.Debug("user created");
                 }
                 else
                 {
-                    Log.Debug("alice already exists");
+                    Log.Debug("user already exists");
                 }
 
-                var bob = userMgr.FindByNameAsync("bob").Result;
-                if (bob == null)
+                user = userMgr.FindByNameAsync("admin").Result;
+                if (user == null)
                 {
-                    bob = new ApplicationUser
+                    user = new ApplicationUser
                     {
-                        UserName = "bob",
-                        Email = "BobSmith@email.com",
+                        UserName = "admin",
+                        Email = "admin@gmail.com",
                         EmailConfirmed = true,
-                        
                     };
-                    var result = userMgr.CreateAsync(bob, "Pass123$").Result;
+                    var result = userMgr.CreateAsync(user, "Admin1234_").Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
+                    result = userMgr.AddToRoleAsync(user, "admin").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+
+                    result = userMgr.AddClaimsAsync(user, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "Fake_admin"),
+                            new Claim(JwtClaimTypes.GivenName, "Admin"),
+                            new Claim(JwtClaimTypes.FamilyName, "No"),
+                            new Claim(JwtClaimTypes.WebSite, "http://admin.com"),
                         }).Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
-                    Log.Debug("bob created");
+                    Log.Debug("admin created");
                 }
                 else
                 {
-                    Log.Debug("bob already exists");
+                    Log.Debug("admin already exists");
                 }
+
+                #endregion
             }
         }
     }

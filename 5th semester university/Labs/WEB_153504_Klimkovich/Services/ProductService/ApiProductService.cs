@@ -1,8 +1,7 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using WEB_153504_Klimkovich.Controllers;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
 
@@ -14,8 +13,9 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         private readonly string _pageSize;
         private readonly ILogger<ApiProductService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
+        private readonly HttpContext _httpContext;
 
-        public ApiProductService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiProductService> logger)
+        public ApiProductService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiProductService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
@@ -24,6 +24,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             _logger = logger;
+            _httpContext = httpContextAccessor.HttpContext;
         }
 
         private async Task SaveImageAsync(int id, IFormFile image)
@@ -38,6 +39,8 @@ namespace WEB_153504_Klimkovich.Services.ProductService
             var streamContent = new StreamContent(image.OpenReadStream());
             content.Add(streamContent, "formFile", image.FileName);
             request.Content = content;
+
+            await SetBearerTokenHeader(request);
             await _httpClient.SendAsync(request);
         }
 
@@ -60,6 +63,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
 
+            await SetBearerTokenHeader();
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
             if (response.IsSuccessStatusCode)
@@ -89,10 +93,11 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         public async Task<ResponseData<Electronics>> CreateProductAsync(Electronics product, IFormFile? formFile)
         {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Electronics");
+            await SetBearerTokenHeader();
             var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
             if (response.IsSuccessStatusCode)
             {
-                var data =  await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
+                var data = await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
                 if (formFile != null)
                 {
                     await SaveImageAsync(data.Data.Id, formFile);
@@ -111,14 +116,14 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         public async Task DeleteProductAsync(int id)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/{id}");
-
+            await SetBearerTokenHeader();
             var response = await _httpClient.DeleteAsync(new Uri(urlString.ToString()));
         }
 
         public async Task<ResponseData<Electronics>> GetProductByIdAsync(int id)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Electronics/{id}");
-
+            await SetBearerTokenHeader();
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
             if (response.IsSuccessStatusCode)
@@ -148,6 +153,7 @@ namespace WEB_153504_Klimkovich.Services.ProductService
         public async Task<ResponseData<Electronics>> UpdateProductAsync(int id, Electronics product, IFormFile? formFile)
         {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"Electronics/{id}");
+            await SetBearerTokenHeader();
             var response = await _httpClient.PutAsJsonAsync(uri, product, _serializerOptions);
 
             if (response.IsSuccessStatusCode)
@@ -166,6 +172,20 @@ namespace WEB_153504_Klimkovich.Services.ProductService
                 Success = false,
                 ErrorMessage = $"Объект не обновлен. Error:{response.StatusCode}"
             };
+        }
+        public async Task SetBearerTokenHeader(HttpRequestMessage request = null)
+        {
+            if (request != null)
+            {
+                var token = await _httpContext.GetTokenAsync("access_token");
+                request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            }
+            else
+            {
+                var token = await _httpContext.GetTokenAsync("access_token");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            }
+
         }
     }
 }

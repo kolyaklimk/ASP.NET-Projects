@@ -1,5 +1,6 @@
-using WEB_153504_Klimkovich.API.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using WEB_153504_Klimkovich.API.Data;
 using WEB_153504_Klimkovich.API.Services.CategoryService;
 using WEB_153504_Klimkovich.API.Services.ProductService;
 
@@ -9,6 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.Authority = builder
+        .Configuration
+        .GetSection("isUri").Value;
+        opt.TokenValidationParameters.ValidateAudience = false;
+        opt.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+    });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,8 +45,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();  
+app.Run();

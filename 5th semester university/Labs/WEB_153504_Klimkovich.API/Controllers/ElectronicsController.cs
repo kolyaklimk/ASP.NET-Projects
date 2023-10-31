@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WEB_153504_Klimkovich.API.Data;
 using WEB_153504_Klimkovich.API.Services.ProductService;
 using WEB_153504_Klimkovich.Domain.Entities;
@@ -47,6 +48,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
 
         // PUT: api/Electronics/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ResponseData<Electronics>>> PutElectronics(int id, Electronics electronics)
         {
@@ -59,6 +61,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
         }
 
         // POST: api/Electronics/5
+        [Authorize]
         [HttpPost("{id}")]
         public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
         {
@@ -72,6 +75,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
 
         // POST: api/Electronics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<ResponseData<Electronics>>> PostElectronics(Electronics electronics)
         {
@@ -84,6 +88,7 @@ namespace WEB_153504_Klimkovich.API.Controllers
         }
 
         // DELETE: api/Electronics/5
+        [Authorize]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteElectronics(int id)
         {
