@@ -16,7 +16,14 @@ namespace WEB_153504_Klimkovich.IdentityServer
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt => opt.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            {
+                opt.SignIn.RequireConfirmedAccount = false;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -48,6 +55,8 @@ namespace WEB_153504_Klimkovich.IdentityServer
                     options.ClientSecret = "copy client secret from Google here";
                 });
 
+            builder.Services.AddControllers();
+
             return builder.Build();
         }
 
@@ -67,7 +76,7 @@ namespace WEB_153504_Klimkovich.IdentityServer
 
             app.MapRazorPages()
                 .RequireAuthorization();
-
+            app.MapControllers();
             return app;
         }
     }
