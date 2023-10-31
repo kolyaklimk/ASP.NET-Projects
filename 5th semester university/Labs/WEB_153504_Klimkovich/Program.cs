@@ -8,20 +8,19 @@ using WEB_153504_Klimkovich.Services.ProductService;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+    .AddEntityFrameworkStores<ApplicationDbContext>();*/
 
 UriData UriData = builder.Configuration.GetSection("UriData").Get<UriData>();
+builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
 builder.Services.AddHttpClient<IProductService, ApiProductService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddRazorPages();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -40,7 +39,7 @@ builder.Services.AddAuthentication(opt =>
         options.SaveTokens = true;
     });
 
-
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
