@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WEB_153504_Klimkovich.Extensions;
 using WEB_153504_Klimkovich.Services.CategoryService;
 using WEB_153504_Klimkovich.Services.ProductService;
 
@@ -27,6 +28,12 @@ namespace WEB_153504_Klimkovich.Controllers
 
             ViewData["currentCategory"] = category == null ? "Всё" : categoriesResponse.Data.Find(arg => arg.NormalizedName == category).Name;
             ViewData["categories"] = categoriesResponse.Data;
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_ProductListPartial", productResponse.Data);
+            }
+
             return View(productResponse.Data);
         }
     }
