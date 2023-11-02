@@ -24,13 +24,13 @@ namespace WEB_153504_Klimkovich.TagHelpers
         {
             var divTag = new TagBuilder("div");
             divTag.AddCssClass("pagination justify-content-center");
-            divTag.InnerHtml.AppendHtml(CreatePageLink("&laquo;", CurrentPage - 1, GetArrowClass));
+            //divTag.InnerHtml.AppendHtml(CreatePageLink("&laquo;", CurrentPage - 1, GetArrowClass));
             for (var pageNum = 1; pageNum <= TotalPages; pageNum++)
             {
                 var pageLink = CreatePageLink(pageNum.ToString(), pageNum, GetPageClass);
                 divTag.InnerHtml.AppendHtml(pageLink);
             }
-            divTag.InnerHtml.AppendHtml(CreatePageLink("&raquo;", CurrentPage + 1, GetArrowClass));
+            //divTag.InnerHtml.AppendHtml(CreatePageLink("&raquo;", CurrentPage + 1, GetArrowClass));
 
             output.TagName = "ul";
             output.Content.SetHtmlContent(divTag);
@@ -38,15 +38,17 @@ namespace WEB_153504_Klimkovich.TagHelpers
 
         private string GetArrowClass(int pageNum)
         {
-            if (pageNum < 1 || pageNum > TotalPages)
+            /*if (pageNum < 1 || pageNum > TotalPages)
                 return "disabled";
             else
-                return "active";
+                return "active";*/
+            return "";
         }
 
         private string GetPageClass(int pageNum)
         {
-            return CurrentPage == pageNum ? "active" : "";
+            //return CurrentPage == pageNum ? "active" : "";
+            return "";
         }
 
         private TagBuilder CreatePageLink(string text, int targetPageNumber, Func<int, string> liTagClassProducer)

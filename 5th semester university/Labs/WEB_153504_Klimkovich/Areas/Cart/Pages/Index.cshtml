@@ -1,0 +1,52 @@
+﻿@page
+@model WEB_153504_Klimkovich.Areas.Cart.Pages.IndexModel
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItems[0].Electronic.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItems[0].Electronic.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItems[0].Electronic.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItems[0].Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartItems[0].Electronic.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value.Electronic.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value.Electronic.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value.Electronic.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value.Count)
+                </td>
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Value.Electronic.Image)" width="100">
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.Key"><i class="fa-solid fa-trash-alt"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

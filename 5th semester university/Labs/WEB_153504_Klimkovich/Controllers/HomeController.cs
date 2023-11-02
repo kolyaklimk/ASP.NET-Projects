@@ -14,8 +14,6 @@ namespace WEB_153504_Klimkovich.Controllers
 
         public IActionResult Index()
         {
-            //ViewData["NameLab"] = "Лабораторная работа №2";
-
             ListDemo = new SelectList(new List<ListDemo>
             {
                 new ListDemo { Id = 1, Name = "Элемент 1" },

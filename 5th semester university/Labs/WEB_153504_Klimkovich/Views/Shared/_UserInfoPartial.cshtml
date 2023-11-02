@@ -1,12 +1,14 @@
-﻿@*
+﻿@using WEB_153504_Klimkovich.Components;
+@using WEB_153504_Klimkovich.Domain;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     var userName = User.Claims.FirstOrDefault(c => c.Type.Equals("Name", StringComparison.OrdinalIgnoreCase))?.Value;
 }
 
-<a class="navbar-text ms-auto" asp-area="Cart" asp-action="Index">
-    @await Component.InvokeAsync("Cart") руб <i class="fa-solid fa-cart-shopping"></i> (0)
+<a class="navbar-text ms-auto" asp-area="Cart" asp-page="/Index">
+    @await Component.InvokeAsync("Cart")
 </a>
 <div class="dropdown ms-4 nav-color">
     <button class="btn btn-secondary dropdown-toggle"

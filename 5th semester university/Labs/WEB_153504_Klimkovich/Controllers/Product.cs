@@ -16,6 +16,8 @@ namespace WEB_153504_Klimkovich.Controllers
             _productService = product;
         }
 
+        [Route("Catalog")]
+        [Route("Catalog/{category}")]
         public async Task<IActionResult> Index(string? category, int pageno)
         {
             var productResponse = await _productService.GetProductListAsync(category, pageno);
