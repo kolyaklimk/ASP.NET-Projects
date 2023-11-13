@@ -20,12 +20,12 @@ namespace WEB_153504_Klimkovich.Controllers
         [Route("Catalog/{category}")]
         public async Task<IActionResult> Index(string? category, int pageno)
         {
-            var productResponse = await _productService.GetProductListAsync(category, pageno);
-            if (!productResponse.Success)
-                return NotFound(productResponse.ErrorMessage);
-
             var categoriesResponse = await _categoryService.GetCategoryListAsync();
             if (!categoriesResponse.Success)
+                return NotFound(categoriesResponse.ErrorMessage);
+
+            var productResponse = await _productService.GetProductListAsync(category, pageno);
+            if (!productResponse.Success)
                 return NotFound(productResponse.ErrorMessage);
 
             ViewData["currentCategory"] = category == null ? "Всё" : categoriesResponse.Data.Find(arg => arg.NormalizedName == category).Name;
