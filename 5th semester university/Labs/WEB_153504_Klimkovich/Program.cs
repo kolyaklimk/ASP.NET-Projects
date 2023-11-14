@@ -1,23 +1,28 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WEB_153504_Klimkovich.Data;
+﻿using Serilog;
+using Serilog.Events;
+using System.Configuration;
+using WEB_153504_Klimkovich;
 using WEB_153504_Klimkovich.Domain;
 using WEB_153504_Klimkovich.Entities;
 using WEB_153504_Klimkovich.Services;
 using WEB_153504_Klimkovich.Services.CategoryService;
 using WEB_153504_Klimkovich.Services.ProductService;
+using WEB_153504_Klimkovich.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();*/
-
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .WriteTo.Console()
+    .WriteTo.File(
+       System.IO.Path.Combine(Directory.GetCurrentDirectory(), "diagnostics.txt"),
+       rollingInterval: RollingInterval.Day,
+       fileSizeLimitBytes: 10 * 1024 * 1024,
+       retainedFileCountLimit: 2,
+       rollOnFileSizeLimit: true,
+       shared: true,
+       flushToDiskInterval: TimeSpan.FromSeconds(1))
+    .CreateLogger();
 UriData UriData = builder.Configuration.GetSection("UriData").Get<UriData>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(UriData.ApiUri));
@@ -48,6 +53,8 @@ builder.Services.AddAuthentication(opt =>
 
 builder.Services.AddRazorPages();
 
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,6 +76,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMyMiddleware();
 
 app.UseSession();
 
