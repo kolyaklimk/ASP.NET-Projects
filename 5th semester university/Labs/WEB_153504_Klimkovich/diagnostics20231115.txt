@@ -1,0 +1,18 @@
+2023-11-15 12:31:14.983 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-15 12:31:15.064 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-15 12:31:15.069 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-15 12:31:15.071 +03:00 [INF] Hosting environment: Development
+2023-11-15 12:31:15.074 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-15 12:31:21.672 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-15 12:31:47.258 +03:00 [INF] Start processing HTTP request GET https://localhost:7002/api/Categories/
+2023-11-15 12:31:47.268 +03:00 [INF] Sending HTTP request GET https://localhost:7002/api/Categories/
+2023-11-15 12:31:48.114 +03:00 [INF] Received HTTP response headers after 838.0242ms - 200
+2023-11-15 12:31:48.123 +03:00 [INF] End processing HTTP request after 870.5547ms - 200
+2023-11-15 12:31:48.192 +03:00 [INF] Start processing HTTP request GET https://localhost:7002/api/Electronics/
+2023-11-15 12:31:48.196 +03:00 [INF] Sending HTTP request GET https://localhost:7002/api/Electronics/
+2023-11-15 12:31:48.641 +03:00 [INF] Received HTTP response headers after 440.8844ms - 200
+2023-11-15 12:31:48.645 +03:00 [INF] End processing HTTP request after 452.6303ms - 200
+2023-11-15 12:31:48.888 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-15 12:31:51.439 +03:00 [INF] ---> request /Catatfglog returns 404
+2023-11-15 12:32:03.545 +03:00 [INF] ---> request /Cafghjtalog returns 404
+2023-11-15 12:32:06.555 +03:00 [INF] ---> request /Cafghjt;lkjalog returns 404

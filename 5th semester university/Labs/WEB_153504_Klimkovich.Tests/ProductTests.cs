@@ -65,9 +65,10 @@ namespace WEB_153504_Klimkovich.Tests
             var controller = new Product(productServiceMock.Object, categoryServiceMock.Object);
             controller.ControllerContext = new ControllerContext { HttpContext = moqHttpContext.Object, };
 
-            var result = await controller.Index(normalizedCategory, 1) as ViewResult;
-
-            Assert.NotNull(result);
+            var temp = await controller.Index(normalizedCategory, 1); ;// as ViewResult;
+           
+            Assert.NotNull(temp); 
+            var result = Assert.IsType<ViewResult>(temp);
             Assert.Equal(products, result.Model);
             Assert.Equal(categories, result.ViewData["categories"]);
             Assert.Equal(currentCategory, result.ViewData["currentCategory"]);
