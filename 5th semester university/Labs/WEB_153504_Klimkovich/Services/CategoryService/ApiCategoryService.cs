@@ -2,17 +2,16 @@
 using System.Text.Json;
 using WEB_153504_Klimkovich.Domain.Entities;
 using WEB_153504_Klimkovich.Domain.Models;
-using WEB_153504_Klimkovich.Services.ProductService;
 
 namespace WEB_153504_Klimkovich.Services.CategoryService
 {
     public class ApiCategoryService : ICategoryService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<ApiProductService> _logger;
+        private readonly ILogger<ApiCategoryService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
 
-        public ApiCategoryService(HttpClient httpClient, ILogger<ApiProductService> logger)
+        public ApiCategoryService(HttpClient httpClient, ILogger<ApiCategoryService> logger)
         {
             _httpClient = httpClient;
             _serializerOptions = new JsonSerializerOptions()

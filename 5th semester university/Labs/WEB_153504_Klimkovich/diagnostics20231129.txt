@@ -1,0 +1,76 @@
+2023-11-29 00:02:20.818 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:02:20.879 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:02:20.883 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:02:20.886 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:02:20.888 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:02:24.704 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:04:01.734 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:04:01.857 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:04:01.862 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:04:01.866 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:04:01.874 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:04:04.381 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:16:39.145 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:16:39.232 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:16:39.238 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:16:39.240 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:16:39.243 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:16:43.363 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:16:52.568 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:16:52.614 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:16:52.618 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:16:52.621 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:16:52.623 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:16:55.181 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:25:58.569 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:25:58.627 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:25:58.632 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:25:58.634 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:25:58.636 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:26:03.121 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:27:14.031 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:27:14.106 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:27:14.121 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:27:14.134 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:27:14.136 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:27:16.907 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:27:50.359 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:27:50.416 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:27:50.420 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:27:50.422 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:27:50.424 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:27:54.350 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:34:04.806 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:34:04.860 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:34:04.864 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:34:04.866 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:34:04.868 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:34:09.208 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:34:39.834 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:34:39.888 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:34:39.893 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:34:39.895 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:34:39.897 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:34:43.931 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:35:07.907 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:35:07.961 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:35:07.965 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:35:07.968 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:35:07.970 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:35:12.056 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404
+2023-11-29 00:36:39.435 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:36:39.504 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:36:39.509 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:36:39.511 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:36:39.514 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:36:54.177 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:36:54.244 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:36:54.251 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:36:54.253 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:36:54.256 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:37:09.784 +03:00 [INF] Now listening on: https://localhost:7001
+2023-11-29 00:37:09.858 +03:00 [INF] Now listening on: http://localhost:5001
+2023-11-29 00:37:09.862 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-29 00:37:09.865 +03:00 [INF] Hosting environment: Development
+2023-11-29 00:37:09.867 +03:00 [INF] Content root path: C:\Users\kolya\Documents\GitHub\ASP.NET-Projects\5th semester university\Labs\WEB_153504_Klimkovich
+2023-11-29 00:37:13.506 +03:00 [INF] ---> request /WebLabs_BSUIR_V02.styles.css returns 404

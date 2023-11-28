@@ -1,0 +1,48 @@
+﻿﻿@using Microsoft.AspNetCore.Authorization
+@using WEB_153504_Klimkovich.BlazorWasm.Pages
+@using WEB_153504_Klimkovich.Domain.Entities
+@using WEB_153504_Klimkovich.BlazorWasm.Services
+@attribute [Authorize]
+@page "/fetchdata"
+@inject IDataService dataService
+
+<PageTitle>Fetchdata</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (dataService.ObjectsList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>@dataService.Success</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var items in dataService.ObjectsList)
+            {
+                <tr>
+                    <td>@items.Name</td>
+                    <td>@items.Price</td>
+                    <td>@items.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await dataService.GetProductListAsync(null);
+    }
+}
