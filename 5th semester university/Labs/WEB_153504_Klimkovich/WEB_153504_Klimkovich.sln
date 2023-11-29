@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153504_Klimkovich.Ident
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153504_Klimkovich.Tests", "..\WEB_153504_Klimkovich.Tests\WEB_153504_Klimkovich.Tests.csproj", "{A558D13F-7329-4857-8861-CF7F0060E8BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153504_Klimkovich.BlazorWasm", "..\WEB_153504_Klimkovich.BlazorWasm\WEB_153504_Klimkovich.BlazorWasm.csproj", "{A307474D-1467-4106-B6C5-E6B0D7B25C7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153504_Klimkovich.BlazorWasm", "..\WEB_153504_Klimkovich.BlazorWasm\WEB_153504_Klimkovich.BlazorWasm.csproj", "{A307474D-1467-4106-B6C5-E6B0D7B25C7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,42 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               role="button"
+               aria-expanded="false">
+                @SelectedCategory
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                       href="/menu/">Все</a>
+                </li>
+                @foreach (var item in DataService.Categories)
+                {
+                    <li>
+                        <a class="dropdown-item" href="/menu/@item?.NormalizedName">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>
+
+@code {
+    [Parameter] public string SelectedCategory { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

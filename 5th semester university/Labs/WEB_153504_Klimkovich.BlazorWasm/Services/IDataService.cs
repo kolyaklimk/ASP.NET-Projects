@@ -4,6 +4,8 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
 {
     public interface IDataService
     {
+        event Action DataLoaded;
+
         List<Category> Categories { get; set; }
         List<Electronics> ObjectsList { get; set; }
 

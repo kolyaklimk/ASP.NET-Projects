@@ -14,7 +14,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
     public class DataService : IDataService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _pageSize;
+        private readonly int _pageSize;
         private readonly string _apiUri;
         private readonly ILogger<DataService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
@@ -24,7 +24,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
         {
             _httpClient = httpClient;
             _apiUri = configuration.GetValue<String>("ApiUri")!;
-            _pageSize = configuration.GetSection("ItemsPerPage").Value;
+            _pageSize = configuration.GetValue<int>("ItemsPerPage");
             _serializerOptions = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -32,6 +32,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
             _logger = logger;
             _accessTokenProvider= accessTokenProvider;
         }
+        public event Action DataLoaded;
         public List<Category> Categories { get; set; }
         public List<Electronics> ObjectsList { get; set; }
 
@@ -43,6 +44,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
         public async Task GetProductListAsync(string? category, int pageNo = 1)
         {
             if (!(await SetBearerTokenHeader())) return;
+
             var urlString = new StringBuilder($"{_apiUri}Electronics/");
 
             if (category != null)
@@ -55,12 +57,14 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
                 urlString.Append($"page{pageNo}");
             };
 
-            if (!_pageSize.Equals("3"))
+            if (!_pageSize.Equals(3))
             {
-                urlString.Append(QueryString.Create("pageSize", _pageSize));
+                urlString.Append(QueryString.Create("pageSize", _pageSize.ToString()));
             }
-            var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
+            
 
+            _logger.LogError($"-----> uri: {urlString}");
+            var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
             if (response.IsSuccessStatusCode)
             {
                 try
@@ -70,6 +74,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
                     ObjectsList = items.Data.Items;
                     TotalPages = items.Data.TotalPages;
                     CurrentPage = items.Data.CurrentPage;
+                    DataLoaded?.Invoke();
                 }
                 catch (JsonException ex)
                 {
@@ -98,6 +103,7 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
                     var item = await response.Content.ReadFromJsonAsync<ResponseData<Electronics>>(_serializerOptions);
                     Success = true;
                     return item.Data;
+                    DataLoaded?.Invoke();
                 }
                 catch (JsonException ex)
                 {
@@ -125,9 +131,11 @@ namespace WEB_153504_Klimkovich.BlazorWasm.Services
             {
                 try
                 {
+                    _logger.LogError(response.Content.ToString());
                     var items = await response.Content.ReadFromJsonAsync<ResponseData<List<Category>>>(_serializerOptions);
                     Success = true;
                     Categories = items.Data;
+                    DataLoaded?.Invoke();
                 }
                 catch (JsonException ex)
                 {

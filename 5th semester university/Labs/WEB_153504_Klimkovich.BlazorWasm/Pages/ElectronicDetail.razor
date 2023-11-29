@@ -1,0 +1,18 @@
+﻿@using WEB_153504_Klimkovich.Domain.Entities
+
+@if (ElectronicSelected != null)
+{
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="@ElectronicSelected.Image" alt="Product image">
+        <div class="card-body">
+            <h5 class="card-title">@ElectronicSelected.Name</h5>
+            <p class="card-text">@ElectronicSelected.Description</p>
+            <a class="btn btn-primary">Цена: @ElectronicSelected.Price</a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Electronics? ElectronicSelected { get; set; }
+}
